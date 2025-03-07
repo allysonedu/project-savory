@@ -9,6 +9,7 @@ import { AppError } from "../../helpers/errors/AppError";
 
 import { env } from "../../environments/env";
 import routes from "../routes";
+import { errorHandler } from "@shared/helpers/errors/error-handler";
 
 const app = express();
 app.use(express.json());
@@ -24,21 +25,7 @@ app.get("/health", (_: Request, response: Response) => {
 
 app.use(routes);
 
-app.use(
-  (err: Error, _request: Request, response: Response, _: NextFunction) => {
-    if (err instanceof AppError) {
-      response.status(err.statusCode).json({
-        status: "error",
-        message: err.message,
-      });
-    }
-
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-);
+app.use(errorHandler as any);
 
 app.listen(env.PORT, () => {
   logger.info(`API rodando na porta ${env.PORT}`);

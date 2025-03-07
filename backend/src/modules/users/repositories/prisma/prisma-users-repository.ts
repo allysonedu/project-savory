@@ -4,12 +4,12 @@ import { prisma } from "../../../../config/prisma";
 // import { generateHashPassword } from "@shared/helpers/encrypt";
 
 export class PrismaUsersRepository {
-  async createUsers(data: IUsersCreateProps, password: string) {
+  async createUsers(data: IUsersCreateProps) {
     const user = await prisma.users.create({
       data: {
         name: data.name,
         email: data.email,
-        password,
+        password: data.password,
       },
     });
     return user;

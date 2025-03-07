@@ -1,11 +1,6 @@
-import { UsersRepository } from "./../repositories/users-repository";
-import { env } from "@shared/environments/env";
-
+import { UsersRepository } from "../repositories/users-repository";
 import { AppError } from "@shared/helpers/errors/AppError";
-
 import { generateHashPassword } from "@shared/helpers/encrypt";
-
-import { v4 as uuid } from "uuid";
 
 export interface IUsersCreateProps {
   name: string;
@@ -14,9 +9,7 @@ export interface IUsersCreateProps {
 }
 
 export class UsersCreateUseCase {
-  constructor(private usersRepository: UsersRepository) {
-    this.usersRepository = usersRepository;
-  }
+  constructor(private usersRepository: UsersRepository) {}
 
   async execute(data: IUsersCreateProps) {
     const userAlreadyExists = await this.usersRepository.findByEmail(
@@ -24,11 +17,19 @@ export class UsersCreateUseCase {
     );
 
     if (userAlreadyExists) {
-      throw new AppError("Email already in use");
+      throw new AppError("Email already in use", 400);
     }
 
-    const hashedPassword = await generateHashPassword(uuid());
+    const hashedPassword = await generateHashPassword(data.password);
 
-    await this.usersRepository.createUsers(data, hashedPassword);
+    const newUser = {
+      ...data,
+      password: hashedPassword,
+    };
+
+    // Cria o usuário no banco
+    await this.usersRepository.createUsers(newUser);
+
+    return { message: "User created successfully" };
   }
 }

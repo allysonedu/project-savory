@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { z } from "zod";
+import { number, z } from "zod";
 
 import { logger } from "../helpers/logger";
 
