@@ -22,4 +22,13 @@ export class PrismaUsersRepository {
 
     return user;
   }
+
+  async saveTokenInDb(token: string, user_id: string) {
+    await prisma.tokens.create({
+      data: {
+        token,
+        user_id,
+      },
+    });
+  }
 }
