@@ -31,4 +31,35 @@ export class PrismaUsersRepository {
       },
     });
   }
+
+  async getUserToken(token: string) {
+    const userToken = await prisma.tokens.findFirst({
+      where: {
+        token,
+      },
+    });
+
+    return userToken;
+  }
+
+  async updatePasswordAndDeleteToken(id: string, password: string) {
+    const user = await prisma.users.update({
+      data: {
+        password,
+      },
+      where: {
+        id,
+      },
+    });
+
+    if (id) {
+      await prisma.tokens.deleteMany({
+        where: {
+          user_id: id,
+        },
+      });
+    }
+
+    return user;
+  }
 }

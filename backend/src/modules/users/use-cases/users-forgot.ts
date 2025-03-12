@@ -1,4 +1,6 @@
 import { MailProvider } from "@shared/helpers/email";
+const crypto = require("crypto");
+
 import { forgotPassword } from "@shared/helpers/email/templates/passwordRecovery";
 import { UsersRepository } from "../repositories/users-repository";
 import { AppError } from "@shared/helpers/errors/AppError";
@@ -19,7 +21,9 @@ export class ForgetPasswordUseCase {
 
     const mailProvider = new MailProvider();
 
-    const token = uuid();
+    const token = parseInt(crypto.randomBytes(3).toString("hex"), 16)
+      .toString()
+      .substring(0, 6);
 
     const html = forgotPassword(user.name, token);
 
