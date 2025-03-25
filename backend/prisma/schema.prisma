@@ -35,3 +35,12 @@ model Tokens {
 
   @@map("tokens")
 }
+
+model Products {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  description String
+
+  @@map("products")
+}
