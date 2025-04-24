@@ -23,7 +23,7 @@ export default function SignUp() {
           </div>
           <div className="flex mb-5  items-center">
             <Lock className="mr-2" />
-            <Input type="email" placeholder="Email" className="" />
+            <Input type="email" placeholder="Senha" className="" />
           </div>
           <Button className="mx-5 mb-2 w-full bg-[#FF725E] hover:bg-amber-700">
             Cadastrar-se
