@@ -1,18 +1,18 @@
-import express, {
-  Request,
-  Response,
-  ErrorRequestHandler,
-  NextFunction,
-} from "express";
+import cors from "cors";
+import express, { Request, Response } from "express";
 import { logger } from "../../helpers/logger";
 import { AppError } from "../../helpers/errors/AppError";
 
 import { env } from "../../environments/env";
 import routes from "../routes";
-import { errorHandler } from "@shared/helpers/errors/error-handler";
+// import { errorHandler } from "@shared/helpers/errors/error-handler";
 
 const app = express();
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
 
 app.get("/health", (_: Request, response: Response) => {
