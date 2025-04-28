@@ -30,4 +30,18 @@ const users = async (data: IUser) => {
   }
 };
 
-export { login, users };
+const forgotPassword = async (email: string) => {
+  try {
+    const result = await api.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/forgot-password`,
+      {
+        email,
+      }
+    );
+    return result.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export { login, users, forgotPassword };
